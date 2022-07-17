@@ -1,6 +1,5 @@
 from flask import Blueprint, request, render_template, flash, g, redirect, jsonify, Markup
 
-import json
 import steamid
 import get5
 from get5 import app, db, BadRequestError, config_setting
@@ -233,44 +232,20 @@ def match(matchid):
                            match=match, team1=team1, team2=team2,
                            map_stat_list=map_stat_list)
 
-@match_blueprint.route('/match/<int:matchid>/stats')
-def match_stats(matchid):
+@match_blueprint.route('/match/<int:matchid>/stats'):
+def match(matchid):
     match = Match.query.get_or_404(matchid)
-    team1_id = match.team1_id
-    team2_id = match.team2_id
-    team1_name = Team.query.get_or_404(team1_id).name
-    team2_name = Team.query.get_or_404(team2_id).name
+    team1 = Team.query.get_or_404(match.team1_id)
+    team2 = Team.query.get_or_404(match.team2_id)
     map_stat_list = match.map_stats.all()
-    player_stat_list = map_stat_list[0].player_stats.all()
 
     result = {}
-    result['winner'] = team1_name if team1_id == match.winner else team2_name
-    result['map'] = map_stat_list[0].map_name
-    result['team1'] = {}
-    result['team1']['name'] = team1_name
-    result['team1']['score'] = map_stat_list[0].team1_score
-    result['team2'] = {}
-    result['team1']['players'] = []
-    result['team2']['name'] = team2_name
-    result['team2']['score'] = map_stat_list[0].team2_score
-    result['team2']['players'] = []
+    result['match'] = match
+    result['team1'] = team1
+    result['team2'] = team2
+    result['map_stat_list'] = map_stat_list
 
-    for i in range(len(player_stat_list)):
-        player = player_stat_list[i]
-        res = {}
-        res['name'] = player.name
-        res['kills'] = player.kills
-        res['deaths'] = player.deaths
-        res['hs'] = player.headshot_kills
-        res['fa'] = player.flashbang_assists
-        res['adr'] = player.get_adr()
-
-        if player.team_id == team1_id:
-            result['team1']['players'].append(res)
-        else:
-            result['team2']['players'].append(res)
-
-    return json.dumps(result)
+    return jsonify(result)
 
 
 @match_blueprint.route('/match/<int:matchid>/config')

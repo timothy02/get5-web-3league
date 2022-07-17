@@ -28,6 +28,7 @@ import util
 
 from flask import (Flask, render_template, flash, jsonify,
                    request, g, session, redirect)
+from flask_cors import CORS
 
 import flask.ext.cache
 import flask.ext.sqlalchemy
@@ -42,6 +43,7 @@ sys.setdefaultencoding('utf-8')
 # Import the Flask Framework
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('prod_config.py')
+cors = CORS(app)
 
 # Setup caching
 cache = flask.ext.cache.Cache(app, config={

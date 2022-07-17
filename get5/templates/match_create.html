@@ -22,6 +22,13 @@
       <br>
 
       <div class="form-group">
+        {{ form.has_knife.label(class="col-sm-2 control-label", style="height:50px") }}
+        <div class="col-sm-4">
+          {{ form.has_knife(class="form-control input-sm") }}
+        </div>
+      </div>
+	<br>
+      <div class="form-group">
         {{ form.team1_id.label(class="col-sm-2 control-label") }}
           <div class="col-sm-4">
             {{ form.team1_id(class="form-control input-sm") }}
