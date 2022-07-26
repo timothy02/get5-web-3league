@@ -1,5 +1,7 @@
-get5-web BETA
+get5-web 3League's edit
 ===========================
+
+This is 3League's edit of get5-web panel. It fixes a couple of bugs, adds Knife option to the panel. It is not by any means ready for production yet if you are not familiar with get5 configuration, but it is aimed to become plug-and-play solution in the future.
 
 [![Build Status](https://travis-ci.org/splewis/get5-web.svg?branch=master)](https://travis-ci.org/splewis/get5-web)
 
